@@ -144,9 +144,14 @@ code, pre { font-family: 'JetBrains Mono', monospace; }
   background: linear-gradient(var(--bg-secondary), var(--bg-secondary)) padding-box,
               conic-gradient(from 0deg, transparent 65%, var(--green-neon) 85%, transparent 100%) border-box;
   pointer-events: none;
-  z-index: 10;
+  z-index: 0;
   opacity: 0;
   transition: opacity 0.3s;
+}
+
+.glass-card > * {
+  position: relative;
+  z-index: 1;
 }
 
 .glass-card:hover {

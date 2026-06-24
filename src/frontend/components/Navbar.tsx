@@ -5,7 +5,7 @@ import { useSession, signIn, signOut } from 'next-auth/react';
 import Image from 'next/image';
 import {
   BookOpen, Upload, Activity, LayoutDashboard,
-  LogIn, LogOut, Menu, X, ChevronDown, ShieldCheck,
+  LogIn, LogOut, Menu, X, ChevronDown, ShieldCheck, Info,
 } from 'lucide-react';
 
 export function Navbar() {
@@ -35,6 +35,7 @@ export function Navbar() {
     { href: '/search', label: 'Papers', icon: BookOpen },
     { href: '/upload', label: 'Upload', icon: Upload },
     { href: '/activity', label: 'Activity', icon: Activity },
+    { href: '/about', label: 'about FOSS', icon: Info },
   ];
 
   return (
