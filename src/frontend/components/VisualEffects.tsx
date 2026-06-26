@@ -19,7 +19,7 @@ export function VisualEffects() {
   useEffect(() => {
     // Check if device supports touch
     const isTouch = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
-    
+
     const cursor = cursorRef.current;
     if (isTouch && cursor) {
       cursor.style.display = 'none';
@@ -44,9 +44,9 @@ export function VisualEffects() {
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       if (!target) return;
-      
+
       const interactive = target.closest('a, button, input, select, textarea, .btn, .badge, .glass-card, [data-cursor-hover]');
-      
+
       if (interactive && cursor) {
         // Designate magnetic element (within 25px threshold)
         const isMagnetic = interactive.closest('a, button, .btn, .badge, [data-cursor-hover]');
@@ -83,7 +83,7 @@ export function VisualEffects() {
       if (!target) return;
 
       const interactive = target.closest('a, button, input, select, textarea, .btn, .badge, .glass-card, [data-cursor-hover]');
-      
+
       if (interactive && cursor) {
         const relatedTarget = e.relatedTarget as HTMLElement;
         if (!relatedTarget || !relatedTarget.closest('a, button, input, select, textarea, .btn, .badge, .glass-card, [data-cursor-hover]')) {
@@ -151,7 +151,7 @@ export function VisualEffects() {
         const dx = mouseX - centerX;
         const dy = mouseY - centerY;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        
+
         if (dist < 70) {
           const pullX = dx * 0.26;
           const pullY = dy * 0.26;
@@ -192,107 +192,33 @@ export function VisualEffects() {
       y: number;
       vx: number;
       vy: number;
-      text: string;
+      size: number;
       baseAlpha: number;
-      alpha: number;
-      currentSpeedMultiplier: number;
-      twinkleOffset: number;
 
       constructor() {
         this.x = Math.random() * width;
         this.y = Math.random() * height;
-        this.vx = (Math.random() - 0.5) * 0.35;
-        this.vy = (Math.random() - 0.5) * 0.35;
-        const codes = ['01', '10', 'CORE', 'DATA', 'HASH', 'SYS', 'NET', 'P2P', 'API', 'UPLINK', 'NODE', 'ARCHIVE', '0x93', '0x0E', '0x1E', '0xDB'];
-        this.text = codes[Math.floor(Math.random() * codes.length)];
-        this.baseAlpha = Math.random() * 0.12 + 0.05;
-        this.alpha = this.baseAlpha;
-        this.currentSpeedMultiplier = 1;
-        this.twinkleOffset = Math.random() * Math.PI * 2;
+        this.vx = (Math.random() - 0.5) * 0.4;
+        this.vy = (Math.random() - 0.5) * 0.4;
+        this.size = Math.random() * 2 + 0.5;
+        this.baseAlpha = Math.random() * 0.3 + 0.1; // Brighter nodes
       }
 
-      update(mouseX: number, mouseY: number) {
-        this.x += this.vx * this.currentSpeedMultiplier;
-        this.y += this.vy * this.currentSpeedMultiplier;
-
-        // Smoothly decay speed multiplier back to 1
-        this.currentSpeedMultiplier += (1 - this.currentSpeedMultiplier) * 0.08;
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
 
         if (this.x < 0) this.x = width;
         if (this.x > width) this.x = 0;
         if (this.y < 0) this.y = height;
         if (this.y > height) this.y = 0;
-
-        // Mouse attraction
-        const dx = mouseX - this.x;
-        const dy = mouseY - this.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-
-        if (dist < 160) {
-          const force = (160 - dist) / 160;
-          const angle = Math.atan2(dy, dx);
-          this.x += Math.cos(angle) * force * 0.45;
-          this.y += Math.sin(angle) * force * 0.45;
-          this.alpha = Math.min(0.55, this.baseAlpha + force * 0.3);
-        } else {
-          this.alpha += (this.baseAlpha - this.alpha) * 0.05;
-        }
       }
 
-      draw(c: CanvasRenderingContext2D, activeRipples: Ripple[]) {
-        let currentAlpha = this.alpha;
-        let sizeScale = 1;
-        let speedBoost = 1;
-        
-        // Ripple proximity detection
-        for (const r of activeRipples) {
-          const dx = this.x - r.x;
-          const dy = this.y - r.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          
-          if (dist < r.radius + 60 && dist > r.radius - 60) {
-            const force = 1 - Math.abs(dist - r.radius) / 60;
-            currentAlpha = Math.min(0.95, currentAlpha + force * 0.7);
-            sizeScale = 1 + force * 0.45;
-            speedBoost = 1 + force * 3.5;
-          }
-        }
-
-        this.currentSpeedMultiplier = speedBoost;
-
-        // Apply a twinkling sine wave
-        const twinkle = Math.sin(Date.now() * 0.0025 + this.twinkleOffset) * 0.35 + 0.65;
-        const finalAlpha = Math.max(0.02, currentAlpha * twinkle);
-
-        c.save();
-        c.strokeStyle = `rgba(14, 147, 0, ${finalAlpha})`;
-        c.fillStyle = `rgba(14, 147, 0, ${finalAlpha * 0.8})`;
-        c.lineWidth = 0.8;
-
-        const size = 3.5 * sizeScale;
-
-        // Draw dynamic glowing constellation star (four-pointed diamond star)
+      draw(c: CanvasRenderingContext2D) {
         c.beginPath();
-        c.moveTo(this.x, this.y - size);
-        c.lineTo(this.x + size / 2.2, this.y);
-        c.lineTo(this.x, this.y + size);
-        c.lineTo(this.x - size / 2.2, this.y);
-        c.closePath();
+        c.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        c.fillStyle = `rgba(14, 147, 0, ${this.baseAlpha})`;
         c.fill();
-
-        // Draw crosshair intersection line for the tech map style
-        c.beginPath();
-        c.moveTo(this.x - size * 1.8, this.y);
-        c.lineTo(this.x + size * 1.8, this.y);
-        c.moveTo(this.x, this.y - size * 1.8);
-        c.lineTo(this.x, this.y + size * 1.8);
-        c.stroke();
-
-        // Faint binary packet label
-        c.font = `${Math.floor(7.5 * sizeScale)}px 'JetBrains Mono', monospace`;
-        c.fillText(this.text, this.x + size + 4, this.y + 3);
-        
-        c.restore();
       }
     }
 
@@ -311,7 +237,7 @@ export function VisualEffects() {
         this.size = Math.random() * 1.5 + 0.4;
         this.vx = (Math.random() - 0.5) * 0.06;
         this.vy = (Math.random() - 0.5) * 0.06;
-        this.alpha = Math.random() * 0.12 + 0.03;
+        this.alpha = Math.random() * 0.25 + 0.08;
         this.twinkleOffset = Math.random() * Math.PI * 2;
       }
 
@@ -337,7 +263,7 @@ export function VisualEffects() {
     let particles: Particle[] = [];
     let dust: DustParticle[] = [];
     const initParticles = () => {
-      const count = window.innerWidth < 768 ? 20 : 50;
+      const count = window.innerWidth < 768 ? 40 : 120;
       const dustCount = window.innerWidth < 768 ? 40 : 100;
       particles = [];
       dust = [];
@@ -422,7 +348,7 @@ export function VisualEffects() {
       ctx.lineWidth = 1.5;
       ripples = ripples.filter((r) => {
         r.radius += r.speed;
-        
+
         const progress = r.radius / r.maxRadius;
         const opacity = 1 - progress;
         if (opacity > 0) {
@@ -434,16 +360,16 @@ export function VisualEffects() {
           ctx.stroke();
           ctx.shadowBlur = 0; // reset shadow
         }
-        
+
         return r.radius < r.maxRadius;
       });
 
       // Connections line properties
-      const connectionDist = 120;
+      const connectionDist = 130;
       for (let i = 0; i < particles.length; i++) {
         const p1 = particles[i];
-        p1.update(mouseX, mouseY);
-        p1.draw(ctx, ripples);
+        p1.update();
+        p1.draw(ctx);
 
         for (let j = i + 1; j < particles.length; j++) {
           const p2 = particles[j];
@@ -452,75 +378,48 @@ export function VisualEffects() {
           const dist = Math.sqrt(dx * dx + dy * dy);
 
           if (dist < connectionDist) {
-            let opacity = (1 - dist / connectionDist) * 0.08 * ((p1.alpha + p2.alpha) / 2);
-            
-            // Check for ripple light up
-            for (const r of ripples) {
-              const rDx = p1.x - r.x;
-              const rDy = p1.y - r.y;
-              const rDist = Math.sqrt(rDx * rDx + rDy * rDy);
-              if (rDist < r.radius + 50 && rDist > r.radius - 50) {
-                const force = 1 - Math.abs(rDist - r.radius) / 50;
-                opacity = Math.min(0.4, opacity + force * 0.25);
-              }
+            let opacity = (1 - dist / connectionDist) * 0.02; // Duller base subtle connections
+
+            // Highlight connections near the mouse to create dynamic constellation
+            let mouseDist1 = 1000;
+            let mouseDist2 = 1000;
+            if (mouseX !== -1000 && mouseY !== -1000) {
+              mouseDist1 = Math.sqrt(Math.pow(mouseX - p1.x, 2) + Math.pow(mouseY - p1.y, 2));
+              mouseDist2 = Math.sqrt(Math.pow(mouseX - p2.x, 2) + Math.pow(mouseY - p2.y, 2));
+            }
+            const minMouseDist = Math.min(mouseDist1, mouseDist2);
+
+            let hoverForce = 0;
+            if (minMouseDist < 250) {
+              hoverForce = (1 - minMouseDist / 250);
+              opacity += hoverForce * 0.12; // Duller when cursor is near
             }
 
-            ctx.beginPath();
-            ctx.moveTo(p1.x, p1.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = `rgba(14, 147, 0, ${opacity})`;
-            ctx.lineWidth = 0.8;
-            ctx.stroke();
-
-            // Triangle mesh mapping for constellation star-cell layout
-            for (let k = j + 1; k < particles.length; k++) {
-              const p3 = particles[k];
-              const dx2 = p2.x - p3.x;
-              const dy2 = p2.y - p3.y;
-              const dist2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
-
-              const dx3 = p3.x - p1.x;
-              const dy3 = p3.y - p1.y;
-              const dist3 = Math.sqrt(dx3 * dx3 + dy3 * dy3);
-
-              if (dist < connectionDist && dist2 < connectionDist && dist3 < connectionDist) {
-                ctx.beginPath();
-                ctx.moveTo(p1.x, p1.y);
-                ctx.lineTo(p2.x, p2.y);
-                ctx.lineTo(p3.x, p3.y);
-                ctx.closePath();
-                ctx.fillStyle = `rgba(14, 147, 0, ${0.015 * ((p1.alpha + p2.alpha + p3.alpha) / 3)})`;
-                ctx.fill();
-              }
+            if (opacity > 0) {
+              ctx.beginPath();
+              ctx.moveTo(p1.x, p1.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.strokeStyle = `rgba(30, 219, 6, ${opacity})`;
+              ctx.lineWidth = hoverForce > 0 ? 0.6 : 0.3;
+              ctx.stroke();
             }
           }
         }
-      }
 
-      // Map lines ONLY to the closest 4 or 5 nodes within 200px of custom cursor
-      if (mouseX !== -1000 && mouseY !== -1000) {
-        const particlesWithDist = particles.map(p => {
-          const dx = mouseX - p.x;
-          const dy = mouseY - p.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          return { p, dist };
-        });
-
-        const closeNodes = particlesWithDist
-          .filter(item => item.dist < 200)
-          .sort((a, b) => a.dist - b.dist)
-          .slice(0, 5);
-
-        closeNodes.forEach(item => {
-          const p = item.p;
-          const opacity = (1 - item.dist / 200) * 0.16;
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(mouseX, mouseY);
-          ctx.strokeStyle = `rgba(14, 147, 0, ${opacity})`;
-          ctx.lineWidth = 0.9;
-          ctx.stroke();
-        });
+        // Connect to mouse cursor directly
+        if (mouseX !== -1000 && mouseY !== -1000) {
+          const mdx = p1.x - mouseX;
+          const mdy = p1.y - mouseY;
+          const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
+          if (mdist < 180) {
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(mouseX, mouseY);
+            ctx.strokeStyle = `rgba(30, 219, 6, ${(1 - mdist / 180) * 0.1})`;
+            ctx.lineWidth = 0.6;
+            ctx.stroke();
+          }
+        }
       }
 
       animId = requestAnimationFrame(animate);
@@ -540,11 +439,11 @@ export function VisualEffects() {
   // Cryptographic Scramble Text Effect exclusively on Mount (Initial Load)
   useEffect(() => {
     const chars = '!@#$%^&*()_+~|{}[]:;?><,./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    
+
     function scrambleTextNode(node: Text, originalText: string, delay: number) {
       let frame = 0;
       const queue: Array<{ to: string; start: number; end: number; char?: string }> = [];
-      
+
       for (let i = 0; i < originalText.length; i++) {
         const to = originalText[i];
         if (to === ' ' || to === '\n') {
@@ -555,12 +454,12 @@ export function VisualEffects() {
         const end = start + Math.floor(Math.random() * 8) + 4;
         queue.push({ to, start, end });
       }
-      
+
       let timer: NodeJS.Timeout;
       function update() {
         let output = '';
         let complete = 0;
-        
+
         for (let i = 0; i < queue.length; i++) {
           const { to, start, end } = queue[i];
           if (to === ' ' || to === '\n') {
@@ -578,9 +477,9 @@ export function VisualEffects() {
             output += ' ';
           }
         }
-        
+
         node.nodeValue = output;
-        
+
         if (complete < queue.length) {
           frame++;
           timer = setTimeout(update, 18);
@@ -588,7 +487,7 @@ export function VisualEffects() {
           node.nodeValue = originalText;
         }
       }
-      
+
       timer = setTimeout(update, delay);
       return () => clearTimeout(timer);
     }
@@ -600,7 +499,7 @@ export function VisualEffects() {
       while (node = walk.nextNode()) {
         textNodes.push({ node: node as Text, text: node.nodeValue || '' });
       }
-      
+
       const cleanups = textNodes.map(({ node, text }, idx) => {
         return scrambleTextNode(node, text, idx * 30 + 20);
       });
@@ -621,7 +520,7 @@ export function VisualEffects() {
 
   return (
     <>
-      {/* Layer 1: The Quantum Grid */}
+      {/* Layer 1: The Quantum Grid (Subtle Artsy) */}
       <div
         ref={gridRef}
         className="quantum-grid"
@@ -634,8 +533,8 @@ export function VisualEffects() {
           pointerEvents: 'none',
           backgroundSize: '45px 45px',
           backgroundImage: `
-            linear-gradient(to right, rgba(14, 147, 0, 0.04) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(14, 147, 0, 0.04) 1px, transparent 1px)
+            linear-gradient(to right, rgba(14, 147, 0, 0.03) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(14, 147, 0, 0.03) 1px, transparent 1px)
           `,
           transformStyle: 'preserve-3d',
           perspective: '1000px',
@@ -644,6 +543,10 @@ export function VisualEffects() {
           transition: 'transform 0.4s cubic-bezier(0.1, 0.75, 0.25, 1)',
         }}
       />
+
+
+
+
 
       {/* Layer 2: Neural Nodes Canvas */}
       <canvas
