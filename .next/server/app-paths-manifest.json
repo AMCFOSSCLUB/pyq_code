@@ -1,10 +1,8 @@
 {
-  "/page": "app/page.js",
-  "/search/page": "app/search/page.js",
-  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/upload/page": "app/upload/page.js",
-  "/activity/page": "app/activity/page.js",
   "/api/activity/route": "app/api/activity/route.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/about/page": "app/about/page.js",
   "/api/stats/route": "app/api/stats/route.js",
-  "/about/page": "app/about/page.js"
+  "/page": "app/page.js",
+  "/search/page": "app/search/page.js"
 }
