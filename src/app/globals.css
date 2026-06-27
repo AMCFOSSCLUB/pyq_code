@@ -2,19 +2,19 @@
 
 /* ─── Design Tokens ─────────────────────────── */
 :root {
-  --bg-primary: #070b18;
-  --bg-secondary: #0d1426;
-  --bg-card: rgba(255, 255, 255, 0.04);
-  --bg-card-hover: rgba(255, 255, 255, 0.07);
-  --border: rgba(255, 255, 255, 0.08);
-  --border-hover: rgba(124, 58, 237, 0.4);
+  --bg-primary: #04060a;
+  --bg-secondary: #080c14;
+  --bg-card: rgba(255, 255, 255, 0.03);
+  --bg-card-hover: rgba(255, 255, 255, 0.06);
+  --border: rgba(255, 255, 255, 0.06);
+  --border-hover: rgba(0, 200, 83, 0.4);
 
-  --violet: #7c3aed;
-  --violet-light: #a78bfa;
-  --violet-dark: #5b21b6;
-  --cyan: #06b6d4;
-  --cyan-light: #67e8f9;
-  --pink: #ec4899;
+  --violet: #00c853;
+  --violet-light: #69f0ae;
+  --violet-dark: #1b5e20;
+  --cyan: #00e676;
+  --cyan-light: #b9f6ca;
+  --pink: #a3e635;
 
   --text-primary: #f1f5f9;
   --text-secondary: #94a3b8;
@@ -25,14 +25,14 @@
   --error: #ef4444;
   --info: #3b82f6;
 
-  --gradient-brand: linear-gradient(135deg, #7c3aed 0%, #06b6d4 100%);
-  --gradient-violet: linear-gradient(135deg, #5b21b6 0%, #7c3aed 100%);
-  --gradient-card: linear-gradient(145deg, rgba(124, 58, 237, 0.08), rgba(6, 182, 212, 0.04));
+  --gradient-brand: linear-gradient(135deg, #00c853 0%, #00e676 100%);
+  --gradient-violet: linear-gradient(135deg, #1b5e20 0%, #00c853 100%);
+  --gradient-card: linear-gradient(145deg, rgba(0, 200, 83, 0.06), rgba(0, 230, 118, 0.03));
 
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
-  --shadow-violet: 0 0 30px rgba(124, 58, 237, 0.2);
-  --shadow-glow: 0 0 60px rgba(124, 58, 237, 0.12);
+  --shadow-violet: 0 0 30px rgba(0, 200, 83, 0.15);
+  --shadow-glow: 0 0 60px rgba(0, 200, 83, 0.08);
 
   --radius-sm: 8px;
   --radius-md: 12px;
@@ -67,8 +67,8 @@ body::before {
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(124, 58, 237, 0.12) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(6, 182, 212, 0.06) 0%, transparent 50%);
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 200, 83, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(0, 230, 118, 0.03) 0%, transparent 50%);
   pointer-events: none;
   z-index: 0;
 }

@@ -5,7 +5,7 @@ import { useSession, signIn, signOut } from 'next-auth/react';
 import Image from 'next/image';
 import {
   BookOpen, Upload, Activity, LayoutDashboard,
-  LogIn, LogOut, Menu, X, ChevronDown, ShieldCheck,
+  LogIn, LogOut, Menu, X, ChevronDown, ShieldCheck, GraduationCap,
 } from 'lucide-react';
 
 export function Navbar() {
@@ -33,6 +33,7 @@ export function Navbar() {
 
   const navLinks = [
     { href: '/search', label: 'Papers', icon: BookOpen },
+    { href: '/departments', label: 'Departments', icon: GraduationCap },
     { href: '/upload', label: 'Upload', icon: Upload },
     { href: '/activity', label: 'Activity', icon: Activity },
   ];

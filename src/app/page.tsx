@@ -23,7 +23,7 @@ async function getRecentActivity() {
 const FEATURES = [
   { icon: GitBranch, title: 'Git-backed Storage', desc: 'Every paper is committed to a GitHub repo — permanently versioned and recoverable.', color: 'var(--violet-light)' },
   { icon: Shield, title: 'Audit Trail', desc: 'Every upload, download and report is logged with timestamp and GitHub identity.', color: 'var(--cyan-light)' },
-  { icon: Zap, title: 'Instant Access', desc: 'Search by subject code and download directly from GitHub\'s CDN — no paywalls.', color: '#f9a8d4' },
+  { icon: Zap, title: 'Instant Access', desc: 'Search by subject code and download directly from GitHub\'s CDN — no paywalls.', color: 'var(--pink)' },
 ];
 
 export default async function HomePage() {
@@ -37,7 +37,7 @@ export default async function HomePage() {
         <div style={{
           position: 'absolute', top: '20%', left: '50%', transform: 'translateX(-50%)',
           width: 600, height: 600, borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(124,58,237,0.08) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(0,200,83,0.06) 0%, transparent 70%)',
           pointerEvents: 'none', zIndex: 0,
         }} />
 
@@ -135,8 +135,8 @@ export default async function HomePage() {
           <div style={{
             maxWidth: 600, margin: '0 auto',
             padding: '52px 40px',
-            background: 'linear-gradient(145deg, rgba(124,58,237,0.1), rgba(6,182,212,0.05))',
-            border: '1px solid rgba(124,58,237,0.2)',
+            background: 'linear-gradient(145deg, rgba(0,200,83,0.08), rgba(0,230,118,0.03))',
+            border: '1px solid rgba(0,200,83,0.15)',
             borderRadius: 'var(--radius-xl)',
           }}>
             <h2 style={{ marginBottom: 14 }}>Have a Paper to Share?</h2>
