@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  # 1. PostgreSQL Database Service
+  db:
+    image: postgres:15-alpine
+    container_name: buildx_db
+    environment:
+      - POSTGRES_DB=buildx
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=k@123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  # 2. Django Authentication & Management Server
+  backend_django:
+    build: ./backend_django
+    container_name: buildx_django
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_HOST=db  # Override host to connect via Docker Compose network name
+      - POSTGRES_PASSWORD=k@123
+    ports:
+      - "8001:8001"
+    depends_on:
+      - db
+    # Automatically execute Django migrations before starting the Django server
+    command: >
+      sh -c "python manage.py migrate scheduler --fake &&
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8001"
+    restart: unless-stopped
+
+  # 3. FastAPI Real-Time WebSocket & CRUD Server
+  backend_fastapi:
+    build: ./backend_fastapi
+    container_name: buildx_fastapi
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_HOST=db  # Override host to connect via Docker Compose network name
+      - POSTGRES_PASSWORD=k@123
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  # 4. Go Frontend Web Server Dashboard
+  frontend:
+    build: ./frontend
+    container_name: buildx_frontend
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+    depends_on:
+      - backend_fastapi
+      - backend_django
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
