@@ -5,6 +5,7 @@ import { Navbar } from '@/frontend/components/Navbar';
 import { Footer } from '@/frontend/components/Footer';
 import { ToastContainer } from '@/frontend/components/ui/Toast';
 import { VisualEffects } from '@/frontend/components/VisualEffects';
+import { NeonUfo } from '@/frontend/components/NeonUfo';
 
 export const metadata: Metadata = {
   title: {
@@ -27,6 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <AuthProvider>
           <VisualEffects />
+          <NeonUfo />
           <Navbar />
           <main style={{ minHeight: 'calc(100vh - 64px)' }}>{children}</main>
           <Footer />

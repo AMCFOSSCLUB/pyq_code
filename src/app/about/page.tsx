@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import {
   ArrowLeft, Users, Trophy, BookOpen, Send, Github,
-  Terminal, ShieldCheck, Mail, MapPin, ExternalLink, Globe,
+  Terminal, ShieldCheck, Mail, MapPin, ExternalLink, Globe, Linkedin, Instagram
 } from 'lucide-react';
 
 function UplinkPopup({ onClose }: { onClose: () => void }) {
@@ -128,17 +128,21 @@ function UplinkPopup({ onClose }: { onClose: () => void }) {
 
 export default function AboutPage() {
   const [showPopup, setShowPopup] = useState(true);
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const [submitted, setSubmitted] = useState(false);
+  const [activeCard, setActiveCard] = useState<number | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => {
-      setFormData({ name: '', email: '', message: '' });
-      setSubmitted(false);
-    }, 3000);
+  const handleCardClick = (index: number) => {
+    setActiveCard(index);
+    setTimeout(() => setActiveCard(null), 400); // momentary flash effect
   };
+
+  const committeeMembers = [
+    { name: 'Annu Mishra', role: 'CSE (2nd Year)' },
+    { name: 'Akshithaa VS', role: 'CSE (2nd Year)' },
+    { name: 'Ansika', role: 'CSED (2nd Year)' },
+    { name: 'Sreenandha', role: 'CSE (3rd Year)' },
+    { name: 'Karthikeyan', role: 'CSE (4th Year)' },
+    { name: 'Ruhan', role: 'CSE (3rd Year)' },
+  ];
 
   return (
     <div className="page-top section" style={{ minHeight: '100vh', position: 'relative', zIndex: 1 }}>
@@ -152,18 +156,82 @@ export default function AboutPage() {
             <h1 className="scramble-text" style={{ fontSize: '2.5rem', fontFamily: 'JetBrains Mono, monospace', margin: 0 }}>
               About AMCFOSS
             </h1>
-            <p style={{ color: 'var(--text-muted)', marginTop: 4 }}>
-              The open-source engine powering the Amrita Chennai academic developer community.
-            </p>
           </div>
           <button className="btn btn-secondary" onClick={() => setShowPopup(true)} style={{ fontFamily: 'JetBrains Mono, monospace' }}>
             <Terminal size={14} style={{ marginRight: 6 }} /> Re-engage Uplink Quote
           </button>
         </div>
 
+        {/* Mission Statement Header */}
+        <div style={{ marginBottom: 48, padding: 32, borderRadius: 'var(--radius-lg)', background: 'linear-gradient(135deg, rgba(14,147,0,0.1), rgba(124,58,237,0.05))', border: '1px solid rgba(14,147,0,0.3)', boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)', backdropFilter: 'blur(5px)', display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <h2 style={{ fontSize: '1.4rem', fontFamily: 'JetBrains Mono, monospace', margin: 0, color: 'var(--green-neon)' }}>Our Mission</h2>
+          <p style={{ color: 'var(--text-primary)', lineHeight: 1.6, fontSize: '1.15rem', fontStyle: 'italic', margin: 0 }}>
+            "Building freedom through open source. Join AMC FOSS Club to collaborate, innovate, and contribute to real-world software that shapes the future."
+          </p>
+        </div>
+
         {/* ── Main Layout ─────────────────────────────── */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 64 }}>
           
+          {/* Core Committee Dashboard */}
+          <section id="core-committee">
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 28, borderBottom: '1px solid var(--border)', paddingBottom: 12 }}>
+              <Users size={22} style={{ color: 'var(--green-neon)' }} />
+              <h2 style={{ fontSize: '1.4rem', fontFamily: 'JetBrains Mono, monospace', margin: 0 }}>Core Committee Members</h2>
+            </div>
+            
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 20 }}>
+              {committeeMembers.map((member, index) => (
+                <div 
+                  key={index}
+                  onClick={() => handleCardClick(index)}
+                  style={{
+                    padding: 24,
+                    background: 'rgba(10, 10, 10, 0.4)',
+                    backdropFilter: 'blur(16px)',
+                    WebkitBackdropFilter: 'blur(16px)',
+                    border: activeCard === index ? '1px solid rgba(14, 147, 0, 0.8)' : '1px solid rgba(255, 255, 255, 0.05)',
+                    borderRadius: 'var(--radius-md)',
+                    boxShadow: activeCard === index ? '0 0 20px rgba(14, 147, 0, 0.4), inset 0 0 10px rgba(14, 147, 0, 0.1)' : '0 4px 30px rgba(0, 0, 0, 0.2)',
+                    transition: 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)',
+                    cursor: 'pointer',
+                    transform: activeCard === index ? 'scale(1.02)' : 'scale(1)',
+                    position: 'relative',
+                    overflow: 'hidden'
+                  }}
+                  className="glass-panel"
+                >
+                  <div style={{
+                    position: 'absolute', inset: 0,
+                    background: 'radial-gradient(circle at top right, rgba(14, 147, 0, 0.15) 0%, transparent 60%)',
+                    opacity: activeCard === index ? 1 : 0.3,
+                    transition: 'opacity 0.3s ease',
+                    pointerEvents: 'none'
+                  }} />
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 16, position: 'relative', zIndex: 1 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <Terminal size={14} style={{ color: 'var(--green-neon)' }} />
+                        <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', letterSpacing: 1 }}>USR_{String(index + 1).padStart(3, '0')}</span>
+                      </div>
+                      <div style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: activeCard === index ? 'var(--green-neon)' : 'rgba(255,255,255,0.1)', boxShadow: activeCard === index ? '0 0 10px var(--green-neon)' : 'none', transition: 'all 0.3s ease' }} />
+                    </div>
+                    <div>
+                      <h3 style={{ fontSize: '1.15rem', margin: '0 0 8px 0', color: '#fff', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600, letterSpacing: 0.5, textTransform: 'uppercase', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        &gt; {member.name}
+                      </h3>
+                      <div style={{ display: 'inline-flex', alignItems: 'center', background: 'rgba(14, 147, 0, 0.05)', border: '1px solid rgba(14, 147, 0, 0.2)', padding: '4px 10px', borderRadius: '4px' }}>
+                        <p style={{ fontSize: '0.75rem', color: 'var(--green-neon)', margin: 0, fontFamily: 'Inter, sans-serif', fontWeight: 500, letterSpacing: 0.5 }}>
+                          {member.role}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
           {/* Wall of Fame */}
           <section id="wall-of-fame">
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 28, borderBottom: '1px solid var(--border)', paddingBottom: 12 }}>
@@ -189,7 +257,7 @@ export default function AboutPage() {
               </div>
               <div style={{ position: 'relative', width: '100%', height: 210, borderRadius: 'var(--radius-xl)', overflow: 'hidden', border: '1px solid var(--border)' }}>
                 <Image
-                  src="/team_collaboration.png"
+                  src="/assets/images/club-group-photo-1.jpg"
                   alt="AMCFOSS Team collaborating"
                   fill
                   style={{ objectFit: 'cover' }}
@@ -208,7 +276,7 @@ export default function AboutPage() {
             <div style={{ display: 'grid', gridTemplateColumns: '320px 1fr', gap: 40, alignItems: 'center' }} className="grid-responsive-about">
               <div className="mobile-order-2" style={{ position: 'relative', width: '100%', height: 210, borderRadius: 'var(--radius-xl)', overflow: 'hidden', border: '1px solid var(--border)' }}>
                 <Image
-                  src="/team_hackathon.png"
+                  src="/assets/images/club-group-photo-2.jpg"
                   alt="AMCFOSS Hackathon event"
                   fill
                   style={{ objectFit: 'cover' }}
@@ -249,18 +317,41 @@ export default function AboutPage() {
               </div>
               <div style={{ position: 'relative', width: '100%', height: 210, borderRadius: 'var(--radius-xl)', overflow: 'hidden', border: '1px solid var(--border)' }}>
                 <Image
-                  src="/team_workshop.png"
+                  src="/assets/images/club-group-photo-3.jpg"
                   alt="AMCFOSS coding workshops"
                   fill
                   style={{ objectFit: 'cover' }}
                 />
               </div>
             </div>
+
+            {/* Fourth Wing Workshop */}
+            <div style={{ display: 'grid', gridTemplateColumns: '320px 1fr', gap: 40, alignItems: 'center', marginTop: 40 }} className="grid-responsive-about">
+              <div className="mobile-order-2" style={{ position: 'relative', width: '100%', height: 210, borderRadius: 'var(--radius-xl)', overflow: 'hidden', border: '1px solid var(--border)' }}>
+                <Image
+                  src="/assets/images/club-group-photo-3.jpg"
+                  alt="Fourth Wing Workshop"
+                  fill
+                  style={{ objectFit: 'cover' }}
+                />
+              </div>
+              <div className="mobile-order-1">
+                <h3 style={{ fontSize: '1.15rem', marginBottom: 8, fontFamily: 'JetBrains Mono, monospace', color: 'var(--text-primary)' }}>"Fourth Wing" Open Source Initiative</h3>
+                <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: 20 }}>
+                  Our flagship workshop, "Fourth Wing", successfully engaged over 40 enthusiastic students. We guided them through the fundamentals of collaborative development, helping them learn, discover, and actively contribute to the vast ecosystem of open source software.
+                </p>
+                <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+                  <span className="badge badge-green">40+ Students Engaged</span>
+                  <span className="badge badge-gray">Open Source Discovery</span>
+                  <span className="badge badge-gray">Hands-on Learning</span>
+                </div>
+              </div>
+            </div>
           </section>
 
           {/* Contact Us & Details */}
           <section id="contact">
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40 }} className="grid-responsive-about">
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 40, maxWidth: 600, margin: '0 auto' }}>
               {/* Info panel */}
               <div className="glass-card" style={{ padding: 32 }}>
                 <h2 style={{ fontSize: '1.3rem', fontFamily: 'JetBrains Mono, monospace', marginBottom: 24, borderBottom: '1px solid var(--border)', paddingBottom: 10 }}>
@@ -284,54 +375,19 @@ export default function AboutPage() {
                       amcfoss.club <ExternalLink size={12} />
                     </a>
                   </div>
-                </div>
-              </div>
-
-              {/* Form panel */}
-              <div className="glass-card" style={{ padding: 32 }}>
-                <h2 style={{ fontSize: '1.3rem', fontFamily: 'JetBrains Mono, monospace', marginBottom: 24, borderBottom: '1px solid var(--border)', paddingBottom: 10 }}>
-                  Transmit Message
-                </h2>
-                {submitted ? (
-                  <div style={{ textAlign: 'center', padding: '40px 0', animation: 'fade-in 0.3s' }}>
-                    <ShieldCheck size={40} style={{ color: 'var(--success)', marginBottom: 12 }} />
-                    <h3 style={{ fontSize: '1rem', fontFamily: 'JetBrains Mono, monospace', color: 'var(--success)' }}>Transmission Succeeded</h3>
-                    <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: 4 }}>Message successfully saved to community feed buffer.</p>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <Linkedin size={16} style={{ color: 'var(--green-neon)' }} />
+                    <a href="https://www.linkedin.com/company/amcfoss/" target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.9rem', color: 'var(--text-primary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4 }}>
+                      <strong>LinkedIn Profile</strong> <ExternalLink size={12} />
+                    </a>
                   </div>
-                ) : (
-                  <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                    <div>
-                      <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: 6, fontFamily: 'JetBrains Mono, monospace' }}>NAME</label>
-                      <input
-                        type="text" required
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        style={{ width: '100%', padding: '10px 14px', background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: 'var(--radius-sm)', color: 'white', fontSize: '0.9rem' }}
-                      />
-                    </div>
-                    <div>
-                      <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: 6, fontFamily: 'JetBrains Mono, monospace' }}>EMAIL</label>
-                      <input
-                        type="email" required
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        style={{ width: '100%', padding: '10px 14px', background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: 'var(--radius-sm)', color: 'white', fontSize: '0.9rem' }}
-                      />
-                    </div>
-                    <div>
-                      <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: 6, fontFamily: 'JetBrains Mono, monospace' }}>MESSAGE BODY</label>
-                      <textarea
-                        required rows={3}
-                        value={formData.message}
-                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                        style={{ width: '100%', padding: '10px 14px', background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: 'var(--radius-sm)', color: 'white', fontSize: '0.9rem', resize: 'vertical' }}
-                      />
-                    </div>
-                    <button type="submit" className="btn btn-primary" style={{ width: '100%', fontFamily: 'JetBrains Mono, monospace', justifyContent: 'center' }}>
-                      Send Transmission <Send size={13} style={{ marginLeft: 6 }} />
-                    </button>
-                  </form>
-                )}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <Instagram size={16} style={{ color: 'var(--green-neon)' }} />
+                    <a href="https://www.instagram.com/amcfoss?igsh=M2tucHV0dzYwbjhq" target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.9rem', color: 'var(--text-primary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4 }}>
+                      Do follow us on Instagram <ExternalLink size={12} />
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
           </section>
