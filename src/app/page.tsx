@@ -21,9 +21,9 @@ async function getRecentActivity() {
 }
 
 const FEATURES = [
-  { icon: GitBranch, title: 'Git-backed Storage', desc: 'Every paper is committed to a GitHub repo — permanently versioned and recoverable.', color: 'var(--violet-light)' },
-  { icon: Shield, title: 'Audit Trail', desc: 'Every upload, download and report is logged with timestamp and GitHub identity.', color: 'var(--cyan-light)' },
-  { icon: Zap, title: 'Instant Access', desc: 'Search by subject code and download directly from GitHub\'s CDN — no paywalls.', color: '#f9a8d4' },
+  { icon: GitBranch, title: 'Git-backed Storage', desc: 'Redundant, Git-backed intelligence nodes. Every paper is committed to the immutable GitHub core — permanently versioned and trace-recoverable.', color: 'var(--green-neon)' },
+  { icon: Shield, title: 'Audit Trail', desc: 'Cryptographic traceability. Every upload, extraction, and report is logged in the public ledger with verified GitHub identity headers.', color: 'var(--green-neon)' },
+  { icon: Zap, title: 'Instant Access', desc: 'Accelerated CDN extracts. Instant search query mapping with direct retrieval from raw repository assets. No walls, no gateways.', color: 'var(--green-neon)' },
 ];
 
 export default async function HomePage() {
@@ -37,27 +37,27 @@ export default async function HomePage() {
         <div style={{
           position: 'absolute', top: '20%', left: '50%', transform: 'translateX(-50%)',
           width: 600, height: 600, borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(124,58,237,0.08) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(0,200,83,0.06) 0%, transparent 70%)',
           pointerEvents: 'none', zIndex: 0,
         }} />
 
         <div className="container" style={{ textAlign: 'center', position: 'relative', zIndex: 1 }}>
           <div className="animate-fade-up" style={{ marginBottom: 16 }}>
-            <span className="badge badge-violet" style={{ fontSize: '0.8rem', padding: '6px 16px' }}>
-              <BookOpen size={11} /> Open Source · Free Forever
+            <span className="badge badge-green" style={{ fontSize: '0.8rem', padding: '6px 16px', fontFamily: 'JetBrains Mono, monospace' }}>
+              <BookOpen size={11} /> Protocol Status: Open Access
             </span>
           </div>
 
-          <h1 className="animate-fade-up delay-1" style={{ maxWidth: 780, margin: '0 auto 20px', lineHeight: 1.1 }}>
-            Find Every <span className="gradient-text">Amrita Chennai</span>{' '}
-            Previous Year Paper
+          <h1 className="animate-fade-up delay-1 scramble-text" style={{ maxWidth: 840, margin: '0 auto 20px', lineHeight: 1.1, fontFamily: 'JetBrains Mono, monospace' }}>
+            [ ARCHIVE_CORE ]
           </h1>
 
           <p className="animate-fade-up delay-2" style={{
-            fontSize: 'clamp(1rem, 2vw, 1.2rem)',
-            color: 'var(--text-muted)', maxWidth: 560, margin: '0 auto 48px',
+            fontSize: 'clamp(1rem, 2vw, 1.15rem)',
+            color: 'var(--text-muted)', maxWidth: 680, margin: '0 auto 48px',
+            lineHeight: 1.6,
           }}>
-            Community-driven. GitHub-backed. No logins needed to browse — just search by subject code and download.
+            An open-source, peer-to-peer intelligence engine mapping past vectors to accelerate future performance. Built by students, for the collective.
           </p>
 
           {/* Search */}
@@ -67,7 +67,7 @@ export default async function HomePage() {
 
           {/* Popular codes */}
           <div className="animate-fade-up delay-3" style={{ display: 'flex', alignItems: 'center', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Popular:</span>
+            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace' }}>Vectors:</span>
             {['23CSE301', '22MAT201', '22PHY101', '22EEE201', '22ECE301'].map((code) => (
               <Link key={code} href={`/search?code=${code}`}>
                 <span className="badge badge-gray" style={{ cursor: 'pointer', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.78rem' }}>{code}</span>
@@ -94,9 +94,9 @@ export default async function HomePage() {
       <section className="section">
         <div className="container">
           <div style={{ textAlign: 'center', marginBottom: 52 }}>
-            <h2>Built for <span className="gradient-text">Students, by Students</span></h2>
-            <p style={{ maxWidth: 480, margin: '12px auto 0', color: 'var(--text-muted)' }}>
-              AMCFOSS maintains this as a free, open-source public good for Amrita Chennai.
+            <h2 style={{ fontFamily: 'JetBrains Mono, monospace' }}>Collaborative Academic Grid</h2>
+            <p style={{ maxWidth: 560, margin: '12px auto 0', color: 'var(--text-muted)' }}>
+              AMCFOSS maintains this architecture as an open-source decentralized asset to accelerate peer academic performance.
             </p>
           </div>
           <div className="grid-3">
@@ -105,7 +105,7 @@ export default async function HomePage() {
                 <div style={{ width: 48, height: 48, borderRadius: 12, background: 'var(--bg-secondary)', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 18 }}>
                   <Icon size={22} style={{ color }} />
                 </div>
-                <h3 style={{ fontSize: '1.05rem', marginBottom: 10 }}>{title}</h3>
+                <h3 style={{ fontSize: '1.05rem', marginBottom: 10, fontFamily: 'JetBrains Mono, monospace' }}>{title}</h3>
                 <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', lineHeight: 1.7 }}>{desc}</p>
               </div>
             ))}
@@ -118,10 +118,10 @@ export default async function HomePage() {
         <div className="container">
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 32 }}>
             <div>
-              <h2 style={{ marginBottom: 6 }}>Recent Uploads</h2>
+              <h2 style={{ marginBottom: 6, fontFamily: 'JetBrains Mono, monospace' }}>Live Data Feed</h2>
               <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Latest papers added by the community</p>
             </div>
-            <Link href="/activity" className="btn btn-secondary btn-sm">
+            <Link href="/activity" className="btn btn-secondary btn-sm" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
               View All <ArrowRight size={13} />
             </Link>
           </div>
@@ -135,15 +135,17 @@ export default async function HomePage() {
           <div style={{
             maxWidth: 600, margin: '0 auto',
             padding: '52px 40px',
-            background: 'linear-gradient(145deg, rgba(124,58,237,0.1), rgba(6,182,212,0.05))',
-            border: '1px solid rgba(124,58,237,0.2)',
+            background: 'linear-gradient(145deg, rgba(0,200,83,0.08), rgba(0,230,118,0.03))',
+            border: '1px solid rgba(0,200,83,0.15)',
+            background: 'linear-gradient(145deg, rgba(14,147,0,0.08), rgba(14,147,0,0.02))',
+            border: '1px solid rgba(14,147,0,0.2)',
             borderRadius: 'var(--radius-xl)',
           }}>
-            <h2 style={{ marginBottom: 14 }}>Have a Paper to Share?</h2>
-            <p style={{ color: 'var(--text-muted)', marginBottom: 28 }}>
+            <h2 style={{ marginBottom: 14, fontFamily: 'JetBrains Mono, monospace' }}>Have a Paper to Share?</h2>
+            <p style={{ color: 'var(--text-muted)', marginBottom: 28, maxWidth: 480, margin: '0 auto 28px', lineHeight: 1.6 }}>
               Upload with your GitHub account. It takes under a minute and helps hundreds of students.
             </p>
-            <Link href="/upload" className="btn btn-primary btn-lg">
+            <Link href="/upload" className="btn btn-primary btn-lg" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
               Upload a Paper <ArrowRight size={16} />
             </Link>
           </div>

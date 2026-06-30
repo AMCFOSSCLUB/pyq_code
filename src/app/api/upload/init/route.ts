@@ -11,8 +11,10 @@ export async function POST(req: NextRequest) {
   const session = await getAuthenticatedSession();
   if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-  const { subjectCode, filename } = await req.json();
+  const { subjectCode, courseTitle, month, filename } = await req.json();
   const code = (subjectCode as string)?.toUpperCase().trim();
+  const title = (courseTitle as string)?.trim() || 'Unknown';
+  const m = (month as string)?.trim() || 'Unknown';
 
   if (!SUBJECT_RE.test(code)) {
     return NextResponse.json({ error: 'Invalid subject code format' }, { status: 400 });
@@ -41,6 +43,8 @@ export async function POST(req: NextRequest) {
   // Create pending upload + chunks subcollection placeholder
   const ref = await db.collection('pendingUploads').add({
     subjectCode: code,
+    subjectTitle: title,
+    month: m,
     filename,
     uploaderGitHub,
     uploaderProfileUrl: `https://github.com/${uploaderGitHub}`,

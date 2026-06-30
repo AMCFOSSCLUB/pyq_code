@@ -36,8 +36,8 @@ export default async function ActivityPage() {
     <div className="page-top section">
       <div className="container">
         <div style={{ marginBottom: 40 }}>
-          <h1 style={{ marginBottom: 8 }}>
-            <span className="gradient-text">Community</span> Activity
+          <h1 className="scramble-text" style={{ marginBottom: 8, fontFamily: 'JetBrains Mono, monospace' }}>
+            Community Activity
           </h1>
           <p style={{ color: 'var(--text-muted)' }}>See what the community has been uploading recently.</p>
         </div>
@@ -46,8 +46,8 @@ export default async function ActivityPage() {
           {/* Feed */}
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
-              <Activity size={18} style={{ color: 'var(--violet-light)' }} />
-              <h2 style={{ fontSize: '1.1rem', fontWeight: 600 }}>Recent Uploads</h2>
+              <Activity size={18} style={{ color: 'var(--green-neon)' }} />
+              <h2 style={{ fontSize: '1.1rem', fontWeight: 600, fontFamily: 'JetBrains Mono, monospace' }}>Recent Uploads</h2>
             </div>
             <ActivityFeed items={items} />
           </div>
@@ -56,7 +56,7 @@ export default async function ActivityPage() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
             {/* Stats */}
             <div className="glass-card" style={{ padding: 24 }}>
-              <h3 style={{ fontSize: '0.9rem', marginBottom: 16, color: 'var(--text-secondary)' }}>Platform Stats</h3>
+              <h3 style={{ fontSize: '0.9rem', marginBottom: 16, color: 'var(--text-secondary)', fontFamily: 'JetBrains Mono, monospace' }}>Platform Stats</h3>
               {[
                 { label: 'Total Papers', value: stats.totalPapers },
                 { label: 'Total Downloads', value: stats.totalDownloads },
@@ -72,7 +72,7 @@ export default async function ActivityPage() {
             {/* Top Contributors */}
             {topContributors.length > 0 && (
               <div className="glass-card" style={{ padding: 24 }}>
-                <h3 style={{ fontSize: '0.9rem', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8, color: 'var(--text-secondary)' }}>
+                <h3 style={{ fontSize: '0.9rem', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8, color: 'var(--text-secondary)', fontFamily: 'JetBrains Mono, monospace' }}>
                   <Trophy size={14} style={{ color: '#fcd34d' }} /> Top Contributors
                 </h3>
                 {topContributors.map(({ github, profileUrl, count }, i) => (
@@ -83,7 +83,7 @@ export default async function ActivityPage() {
                     <a href={profileUrl} target="_blank" rel="noreferrer" style={{ flex: 1, fontSize: '0.875rem', color: 'var(--text-secondary)', textDecoration: 'none' }}>
                       @{github}
                     </a>
-                    <span className="badge badge-violet">{count}</span>
+                    <span className="badge badge-green">{count}</span>
                   </div>
                 ))}
               </div>

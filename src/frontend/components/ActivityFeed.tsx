@@ -40,8 +40,8 @@ export function ActivityFeed({ items, loading }: Props) {
     return (
       <div className="empty-state">
         <Upload size={40} />
-        <h3>No uploads yet</h3>
-        <p>Be the first to upload a paper!</p>
+        <h3>NO_TRANSMISSIONS_DETECTED</h3>
+        <p>Initialize first uplink to stream new parameters.</p>
       </div>
     );
   }
@@ -52,18 +52,18 @@ export function ActivityFeed({ items, loading }: Props) {
         <div key={item.id} className="glass-card" style={{ padding: '14px 18px', display: 'flex', alignItems: 'center', gap: 14 }}>
           <div style={{
             width: 38, height: 38, flexShrink: 0,
-            background: 'rgba(124,58,237,0.12)',
-            border: '1px solid rgba(124,58,237,0.2)',
+            background: 'rgba(14, 147, 0, 0.12)',
+            border: '1px solid rgba(14, 147, 0, 0.2)',
             borderRadius: 9,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>
-            <Upload size={15} style={{ color: 'var(--violet-light)' }} />
+            <Upload size={15} style={{ color: 'var(--green-neon)' }} />
           </div>
 
           <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
               <Link href={`/search?code=${item.subjectCode}`}>
-                <span className="badge badge-violet" style={{ fontFamily: 'JetBrains Mono, monospace', cursor: 'pointer' }}>
+                <span className="badge badge-green" style={{ fontFamily: 'JetBrains Mono, monospace', cursor: 'pointer' }}>
                   {item.subjectCode}
                 </span>
               </Link>

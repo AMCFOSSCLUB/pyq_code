@@ -2,13 +2,13 @@ import { UploadForm } from '@/frontend/components/UploadForm';
 import { Shield, CheckCircle } from 'lucide-react';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = { title: 'Upload Paper' };
+export const metadata: Metadata = { title: 'TRANSMIT // Upload Interface' };
 
 const RULES = [
-  { icon: CheckCircle, text: 'PDF files only, max 2 MB' },
-  { icon: CheckCircle, text: 'Must be an actual Amrita Chennai exam paper' },
-  { icon: CheckCircle, text: 'Filename is auto-generated from subject code + date' },
-  { icon: CheckCircle, text: 'GitHub account required (for traceability)' },
+  { icon: CheckCircle, text: 'PDF formats only, payload max limit: 2 MB' },
+  { icon: CheckCircle, text: 'Verified Amrita Chennai academic vectors only' },
+  { icon: CheckCircle, text: 'Package mapping auto-named by subject code + timestamp' },
+  { icon: CheckCircle, text: 'GitHub cryptographic authorization required' },
 ];
 
 export default function UploadPage() {
@@ -16,7 +16,7 @@ export default function UploadPage() {
     <div className="page-top section">
       <div className="container" style={{ maxWidth: 860 }}>
         <div style={{ marginBottom: 40 }}>
-          <h1 style={{ marginBottom: 8 }}>Upload a <span className="gradient-text">Question Paper</span></h1>
+          <h1 className="scramble-text" style={{ marginBottom: 8, fontFamily: 'JetBrains Mono, monospace' }}>Upload a Question Paper</h1>
           <p style={{ color: 'var(--text-muted)' }}>Contribute to the community repository. Papers are stored on GitHub and available to all students instantly.</p>
         </div>
 
@@ -30,8 +30,8 @@ export default function UploadPage() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
             {/* Guidelines */}
             <div className="glass-card" style={{ padding: 24 }}>
-              <h3 style={{ fontSize: '0.95rem', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
-                <Shield size={16} style={{ color: 'var(--violet-light)' }} /> Upload Guidelines
+              <h3 style={{ fontSize: '0.95rem', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8, fontFamily: 'JetBrains Mono, monospace' }}>
+                <Shield size={16} style={{ color: 'var(--green-neon)' }} /> Upload Guidelines
               </h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                 {RULES.map(({ icon: Icon, text }) => (

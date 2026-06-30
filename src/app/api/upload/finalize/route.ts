@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
   if (!pending.exists) return NextResponse.json({ error: 'Upload session not found' }, { status: 404 });
 
   const pendingData = pending.data()!;
-  const { subjectCode, filename, uploaderGitHub, uploaderProfileUrl } = pendingData;
+  const { subjectCode, subjectTitle, month, filename, uploaderGitHub, uploaderProfileUrl } = pendingData;
 
   // Reassemble chunks in order
   const chunksSnap = await pendingRef.collection('chunks')
@@ -60,11 +60,15 @@ export async function POST(req: NextRequest) {
 
   try {
     // Commit to GitHub
-    const commitSha = await uploadFile(subjectCode, filename, fullBase64, uploaderGitHub);
+    const title = subjectTitle || 'Unknown';
+    const m = month || 'Unknown';
+    const commitSha = await uploadFile(subjectCode, title, m, fullBase64, uploaderGitHub);
 
     // Write Firestore upload doc
     const uploadRef = await db.collection('uploads').add({
       subjectCode,
+      subjectTitle: title,
+      month: m,
       filename,
       uploaderGitHub,
       uploaderProfileUrl,
@@ -80,7 +84,7 @@ export async function POST(req: NextRequest) {
     await db.collection('auditLogs').add({
       action: 'UPLOAD',
       actorGitHub: uploaderGitHub,
-      targetFile: `${subjectCode}/${filename}`,
+      targetFile: `${title}/${subjectCode}/${m}/${filename}`,
       timestamp: FieldValue.serverTimestamp(),
     });
 

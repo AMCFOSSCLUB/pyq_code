@@ -79,7 +79,7 @@ export default function SearchPage() {
     <div className="page-top section">
       <div className="container">
         <div style={{ marginBottom: 40 }}>
-          <h1 style={{ marginBottom: 8 }}>Browse <span className="gradient-text">Question Papers</span></h1>
+          <h1 className="scramble-text" style={{ marginBottom: 8, fontFamily: 'JetBrains Mono, monospace' }}>Browse Question Papers</h1>
           <p style={{ color: 'var(--text-muted)' }}>Search by subject code to find all available previous year papers.</p>
         </div>
 
