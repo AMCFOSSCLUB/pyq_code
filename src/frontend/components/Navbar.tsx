@@ -36,6 +36,7 @@ export function Navbar() {
     { href: '/departments', label: 'Departments', icon: GraduationCap },
     { href: '/upload', label: 'Upload', icon: Upload },
     { href: '/activity', label: 'Activity', icon: Activity },
+    { href: '/about', label: 'about FOSS', icon: Info },
   ];
 
   return (

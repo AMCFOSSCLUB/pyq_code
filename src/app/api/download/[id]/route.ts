@@ -28,11 +28,11 @@ export async function GET(
     db.collection('auditLogs').add({
       action: 'DOWNLOAD',
       actorGitHub: 'anonymous',
-      targetFile: `${data.subjectCode}/${data.filename}`,
+      targetFile: data.month && data.subjectTitle ? `${data.subjectTitle}/${data.subjectCode}/${data.month}/${data.filename}` : `${data.subjectCode}${data.subjectTitle ? ` - ${data.subjectTitle}` : ''}/${data.filename}`,
       timestamp: FieldValue.serverTimestamp(),
     }).catch(() => {});
 
-    const url = getFileDownloadUrl(data.subjectCode, data.filename);
+    const url = getFileDownloadUrl(data.subjectCode, data.subjectTitle, data.month, data.filename);
     return NextResponse.json({ url });
   } catch (err: any) {
     console.error('[download]', err);

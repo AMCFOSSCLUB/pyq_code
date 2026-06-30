@@ -24,6 +24,7 @@ export function UploadForm() {
   const fileRef = useRef<HTMLInputElement>(null);
 
   const [subjectCode, setSubjectCode] = useState('');
+  const [courseTitle, setCourseTitle] = useState('');
   const [month, setMonth] = useState('Nov');
   const [year, setYear] = useState(String(currentYear - 1));
   const [examType, setExamType] = useState('mid');
@@ -33,7 +34,9 @@ export function UploadForm() {
   const [errorMsg, setErrorMsg] = useState('');
 
   function buildFilename() {
-    return `${month}${year}_${examType}.pdf`;
+    const formattedTitle = courseTitle.trim() ? courseTitle.trim().replace(/[^a-zA-Z0-9]+/g, '_') + '_' : '';
+    const codePart = subjectCode.trim() ? subjectCode.trim().toUpperCase() + '_' : '';
+    return `${formattedTitle}${codePart}${month}${year}_${examType}.pdf`;
   }
 
   function validateSubjectCode(code: string) {
@@ -96,6 +99,8 @@ export function UploadForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           subjectCode: code,
+          courseTitle: courseTitle.trim(),
+          month,
           filename,
           content: base64Content,
         }),
@@ -119,6 +124,7 @@ export function UploadForm() {
   function reset() {
     setFile(null);
     setSubjectCode('');
+    setCourseTitle('');
     setMonth('Nov');
     setYear(String(currentYear - 1));
     setExamType('mid');
@@ -170,6 +176,22 @@ export function UploadForm() {
 
   return (
     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+      {/* Course Title */}
+      <div className="input-group">
+        <label className="input-label" htmlFor="course-title-input">Course Title *</label>
+        <input
+          id="course-title-input"
+          className="input"
+          type="text"
+          value={courseTitle}
+          onChange={(e) => setCourseTitle(e.target.value)}
+          placeholder="e.g. Data Structures and Algorithms"
+          maxLength={30}
+          required
+          disabled={uploading}
+        />
+      </div>
+
       {/* Subject Code */}
       <div className="input-group">
         <label className="input-label" htmlFor="subject-code-input">Subject Code *</label>
@@ -218,7 +240,7 @@ export function UploadForm() {
       <div style={{ padding: '10px 14px', background: 'rgba(124,58,237,0.06)', border: '1px solid rgba(124,58,237,0.15)', borderRadius: 'var(--radius-sm)' }}>
         <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>File will be saved as: </span>
         <code style={{ fontSize: '0.85rem', color: 'var(--violet-light)', fontFamily: 'JetBrains Mono, monospace' }}>
-          {subjectCode || 'SUBJECTCODE'}/{buildFilename()}
+          {courseTitle.trim() || 'SUBJECT_TITLE'}/{subjectCode || 'SUBJECT_CODE'}/{month}/{buildFilename()}
         </code>
       </div>
 
@@ -286,7 +308,7 @@ export function UploadForm() {
         type="submit"
         className="btn btn-primary btn-lg"
         style={{ justifyContent: 'center' }}
-        disabled={uploading || !file || !subjectCode}
+        disabled={uploading || !file || !subjectCode || !courseTitle.trim()}
       >
         {uploading ? <><span className="spinner" />Uploading…</> : <><Upload size={16} />Upload Paper</>}
       </button>

@@ -34,11 +34,13 @@ export async function listFilesInSubject(subjectCode: string): Promise<GitHubFil
  */
 export async function uploadFile(
   subjectCode: string,
+  subjectTitle: string,
+  month: string,
   filename: string,
   base64Content: string,
   uploaderUsername: string
 ): Promise<string> {
-  const path = `${subjectCode}/${filename}`;
+  const path = `${subjectTitle}/${subjectCode}/${month}/${filename}`;
 
   // Get existing SHA if file already exists (required for updates)
   let sha: string | undefined;
@@ -60,6 +62,11 @@ export async function uploadFile(
 }
 
 /** Returns the raw GitHub CDN URL for a stored PDF. */
-export function getFileDownloadUrl(subjectCode: string, filename: string): string {
-  return `https://raw.githubusercontent.com/${owner}/${repo}/main/${subjectCode}/${filename}`;
+export function getFileDownloadUrl(subjectCode: string, subjectTitle: string | undefined, month: string | undefined, filename: string): string {
+  if (month && subjectTitle) {
+    return `https://raw.githubusercontent.com/${owner}/${repo}/main/${subjectTitle}/${subjectCode}/${month}/${filename}`;
+  }
+  // Fallback for older uploads
+  const pathTitle = subjectTitle ? ` - ${subjectTitle}` : '';
+  return `https://raw.githubusercontent.com/${owner}/${repo}/main/${subjectCode}${pathTitle}/${filename}`;
 }

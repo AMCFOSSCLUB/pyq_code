@@ -22,8 +22,10 @@ export async function POST(req: NextRequest) {
   const session = await getAuthenticatedSession();
   if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-  const { subjectCode, filename, content } = await req.json();
+  const { subjectCode, courseTitle, month, filename, content } = await req.json();
   const code = (subjectCode as string)?.toUpperCase().trim();
+  const title = (courseTitle as string)?.trim() || 'Unknown';
+  const m = (month as string)?.trim() || 'Unknown';
 
   if (!SUBJECT_RE.test(code)) {
     return NextResponse.json({ error: 'Invalid subject code format. Expected: 22CSE301, 19MA201' }, { status: 400 });
@@ -67,11 +69,13 @@ export async function POST(req: NextRequest) {
 
   try {
     // Commit to GitHub
-    const commitSha = await uploadFile(code, filename, content, uploaderGitHub);
+    const commitSha = await uploadFile(code, title, m, filename, content, uploaderGitHub);
 
     // Write Firestore upload doc
     const uploadRef = await db.collection('uploads').add({
       subjectCode: code,
+      subjectTitle: title,
+      month: m,
       filename,
       uploaderGitHub,
       uploaderProfileUrl,
@@ -87,7 +91,7 @@ export async function POST(req: NextRequest) {
     await db.collection('auditLogs').add({
       action: 'UPLOAD',
       actorGitHub: uploaderGitHub,
-      targetFile: `${code}/${filename}`,
+      targetFile: `${title}/${code}/${m}/${filename}`,
       timestamp: FieldValue.serverTimestamp(),
     });
 
