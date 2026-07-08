@@ -1,8 +1,8 @@
 {
   "/page": "app/page.js",
+  "/api/admin/departments/route": "app/api/admin/departments/route.js",
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/api/admin/departments/[department]/route": "app/api/admin/departments/[department]/route.js",
-  "/admin/departments/page": "app/admin/departments/page.js",
-  "/admin/departments/[department]/page": "app/admin/departments/[department]/page.js",
-  "/_not-found/page": "app/_not-found/page.js"
+  "/api/stats/route": "app/api/stats/route.js",
+  "/departments/page": "app/departments/page.js",
+  "/api/activity/route": "app/api/activity/route.js"
 }
