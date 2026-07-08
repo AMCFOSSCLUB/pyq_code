@@ -92,7 +92,7 @@ body::before {
   inset: 0;
   background:
     radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 200, 83, 0.06) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(0, 230, 118, 0.03) 0%, transparent 50%);
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(0, 230, 118, 0.03) 0%, transparent 50%),
     radial-gradient(ellipse 80% 50% at 50% -20%, rgba(30, 219, 6, 0.03) 0%, transparent 60%),
     radial-gradient(ellipse 60% 40% at 80% 80%, rgba(14, 147, 0, 0.02) 0%, transparent 50%),
     radial-gradient(ellipse 50% 50% at 10% 40%, rgba(14, 147, 0, 0.015) 0%, transparent 40%);

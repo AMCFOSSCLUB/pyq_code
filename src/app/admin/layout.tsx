@@ -1,12 +1,24 @@
 import { getAdminSession } from '@/backend/services/auth';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
-import { ShieldCheck, LayoutDashboard, FileText, Eye, Flag, BarChart2 } from 'lucide-react';
+import {
+  ShieldCheck,
+  LayoutDashboard,
+  FileText,
+  Eye,
+  Flag,
+  BarChart2,
+  GraduationCap
+} from 'lucide-react';
 
 const NAV_ITEMS = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/admin/logs', label: 'Upload Logs', icon: FileText },
   { href: '/admin/audit', label: 'Audit Log', icon: Eye },
+
+  // NEW
+  { href: '/admin/departments', label: 'Departments', icon: GraduationCap },
+
   { href: '/admin/reports', label: 'Reports', icon: Flag },
   { href: '/admin/analytics', label: 'Analytics', icon: BarChart2 },
 ];

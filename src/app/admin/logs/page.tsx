@@ -51,6 +51,7 @@ export default async function AdminLogsPage({ searchParams }: { searchParams: { 
             <tr>
               <th>Subject</th>
               <th>Filename</th>
+              <th>Reports</th>
               <th>Uploader</th>
               <th>Uploaded</th>
               <th>Size</th>
@@ -67,6 +68,13 @@ export default async function AdminLogsPage({ searchParams }: { searchParams: { 
                   </code>
                 </td>
                 <td style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.82rem' }}>{log.filename}</td>
+                <td style={{ width: 80 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <div style={{ minWidth: 28, height: 28, borderRadius: 999, background: 'rgba(252, 165, 165, 0.12)', border: '1px solid rgba(252,165,165,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <span style={{ color: '#ef4444', fontWeight: 700, fontSize: '0.85rem' }}>{(log.reportCount || 0)}</span>
+                    </div>
+                  </div>
+                </td>
                 <td>
                   <a href={log.uploaderProfileUrl} target="_blank" rel="noreferrer" style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
                     @{log.uploaderGitHub}

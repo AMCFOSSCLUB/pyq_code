@@ -1,14 +1,35 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { DEPARTMENTS, Department, Subject } from '@/frontend/utils/departments';
+import { DEPARTMENTS, Department, Subject } from '@/shared/departments';
 import { DepartmentCard } from '@/frontend/components/DepartmentCard';
 import { GraduationCap, Search, X, ChevronRight, Clock, Trash2, BookOpen } from 'lucide-react';
 import Link from 'next/link';
 
 export default function DepartmentsPage() {
+  const [departments, setDepartments] = useState<Department[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDomain, setSelectedDomain] = useState('All');
   const [recentDepts, setRecentDepts] = useState<Department[]>([]);
+
+  useEffect(() => {
+    async function loadDepartments() {
+      try {
+        const response = await fetch('/api/admin/departments');
+        const result = await response.json();
+
+        if (result.success && result.data) {
+          setDepartments(result.data);
+        } else {
+          setDepartments(DEPARTMENTS);
+        }
+      } catch (e) {
+        console.error(e);
+        setDepartments(DEPARTMENTS);
+      }
+    }
+
+    loadDepartments();
+  }, []);
 
   useEffect(() => {
     try {
@@ -16,14 +37,14 @@ export default function DepartmentsPage() {
       if (recent) {
         const recentIds: string[] = JSON.parse(recent);
         const matched = recentIds
-          .map(id => DEPARTMENTS.find(d => d.id === id))
+          .map(id => departments.find(d => d.id === id))
           .filter(Boolean) as Department[];
         setRecentDepts(matched);
       }
     } catch (e) {
       console.error(e);
     }
-  }, []);
+  }, [departments]);
 
   const clearRecentDepts = () => {
     try {
@@ -53,8 +74,8 @@ export default function DepartmentsPage() {
     return true;
   };
 
-  // Find matching departments
-  const filteredDepartments = DEPARTMENTS.filter(dept => {
+  // Find matching departments from live backend data
+  const filteredDepartments = departments.filter(dept => {
     const matchesDomain = filterDepartmentsByDomain(dept.id, selectedDomain);
     const matchesSearch = searchQuery === '' || 
       dept.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -70,7 +91,7 @@ export default function DepartmentsPage() {
   
   const matchedSubjects: MatchedSubject[] = [];
   if (searchQuery.trim() !== '') {
-    DEPARTMENTS.forEach(dept => {
+    departments.forEach(dept => {
       dept.subjects.forEach(sub => {
         if (
           sub.code.toLowerCase().includes(searchQuery.toLowerCase()) ||

@@ -5,7 +5,7 @@ import { useSession, signIn, signOut } from 'next-auth/react';
 import Image from 'next/image';
 import {
   BookOpen, Upload, Activity, LayoutDashboard,
-  LogIn, LogOut, Menu, X, ChevronDown, ShieldCheck, GraduationCap,
+  LogIn, LogOut, Menu, X, Info, ChevronDown, ShieldCheck, GraduationCap,
 } from 'lucide-react';
 
 export function Navbar() {

@@ -1,15 +1,17 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { Flag, CheckCircle, AlertCircle } from 'lucide-react';
+import { Flag, CheckCircle, AlertCircle, Trash2 } from 'lucide-react';
 
 interface Report {
   id: string;
   reportedBy: string;
+  reportedByUsers?: string[];
   subjectCode: string;
   filename: string;
   reason: string;
   description: string;
   reportedAt: string;
+  reportCount: number;
   resolved: boolean;
 }
 
@@ -17,13 +19,36 @@ export default function AdminReportsPage() {
   const [reports, setReports] = useState<Report[]>([]);
   const [loading, setLoading] = useState(true);
   const [resolving, setResolving] = useState<string | null>(null);
+  const [removing, setRemoving] = useState<string | null>(null);
+  const [canRemovePaper, setCanRemovePaper] = useState(false);
 
   async function load() {
     setLoading(true);
-    const res = await fetch('/api/admin/reports');
-    const { reports: r } = await res.json();
-    setReports(r || []);
-    setLoading(false);
+    try {
+      const [reportsRes, adminRes] = await Promise.all([
+        fetch('/api/admin/reports').catch(() => null),
+        fetch('/api/admin/me').catch(() => null),
+      ]);
+
+      if (reportsRes?.ok) {
+        const reportsPayload = await reportsRes.json().catch(() => ({ reports: [] }));
+        setReports(Array.isArray(reportsPayload?.reports) ? reportsPayload.reports : []);
+      } else {
+        setReports([]);
+      }
+
+      if (adminRes?.ok) {
+        const adminData = await adminRes.json().catch(() => ({ isAuthorizedAdmin: false }));
+        setCanRemovePaper(Boolean(adminData?.isAuthorizedAdmin));
+      } else {
+        setCanRemovePaper(false);
+      }
+    } catch {
+      setReports([]);
+      setCanRemovePaper(false);
+    } finally {
+      setLoading(false);
+    }
   }
 
   async function resolve(id: string) {
@@ -37,7 +62,24 @@ export default function AdminReportsPage() {
     setResolving(null);
   }
 
-  useEffect(() => { load(); }, []);
+  async function removePaper(id: string) {
+    const confirmed = window.confirm('Permanently delete this paper, its PDF, and all related report records?');
+    if (!confirmed) return;
+
+    setRemoving(id);
+    const res = await fetch('/api/admin/reports', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ reportId: id, action: 'remove' }),
+    });
+
+    if (res.ok) {
+      setReports((prev) => prev.filter((r) => r.id !== id));
+    }
+    setRemoving(null);
+  }
+
+  useEffect(() => { void load(); }, []);
 
   return (
     <div>
@@ -76,11 +118,16 @@ export default function AdminReportsPage() {
                   {r.description && (
                     <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 8 }}>{r.description}</p>
                   )}
-                  <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-                    Reported by @{r.reportedBy} · {r.reportedAt ? new Date(r.reportedAt).toLocaleDateString('en-IN') : ''}
+                  <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginBottom: 8 }}>
+                    Reported by @{(r.reportedByUsers && r.reportedByUsers.length > 0 ? r.reportedByUsers : [r.reportedBy]).join(', @')} · {r.reportedAt ? new Date(r.reportedAt).toLocaleDateString('en-IN') : ''}
                   </p>
+                  {(r.reportCount || 0) >= 3 && (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#f59e0b', fontSize: '0.8rem', fontWeight: 600 }}>
+                      <AlertCircle size={14} /> Report threshold reached
+                    </div>
+                  )}
                 </div>
-                <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
+                <div style={{ display: 'flex', gap: 8, flexShrink: 0, alignItems: 'center' }}>
                   <a
                     href={`/search?code=${r.subjectCode}`}
                     target="_blank"
@@ -89,6 +136,9 @@ export default function AdminReportsPage() {
                   >
                     View Paper
                   </a>
+                  <span aria-label={`${r.reportCount || 0} reports`} style={{ width: 24, height: 24, borderRadius: '50%', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(239,68,68,0.16)', color: '#fca5a5', fontSize: '0.8rem', fontWeight: 700 }}>
+                    {r.reportCount || 0}
+                  </span>
                   <button
                     id={`resolve-${r.id}`}
                     className="btn btn-primary btn-sm"
@@ -98,6 +148,17 @@ export default function AdminReportsPage() {
                     {resolving === r.id ? <span className="spinner" /> : <CheckCircle size={13} />}
                     Resolve
                   </button>
+                  {canRemovePaper && (
+                    <button
+                      id={`remove-${r.id}`}
+                      className="btn btn-danger btn-sm"
+                      onClick={() => removePaper(r.id)}
+                      disabled={removing === r.id}
+                    >
+                      {removing === r.id ? <span className="spinner" /> : <Trash2 size={13} />}
+                      Remove Paper
+                    </button>
+                  )}
                 </div>
               </div>
             </div>

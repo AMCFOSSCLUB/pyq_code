@@ -1,5 +1,4 @@
 'use client';
-import { useState } from 'react';
 import Link from 'next/link';
 import * as Icons from 'lucide-react';
 import { Department } from '../utils/departments';
@@ -9,11 +8,6 @@ interface DepartmentCardProps {
 }
 
 export function DepartmentCard({ department }: DepartmentCardProps) {
-  const [isFocused, setIsFocused] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
-
-  const active = isHovered || isFocused;
-
   // Dynamically resolve the icon from Lucide React
   // Fallback to GraduationCap if icon not found
   const IconComponent = (Icons as any)[department.icon] || Icons.GraduationCap;
@@ -35,16 +29,12 @@ export function DepartmentCard({ department }: DepartmentCardProps) {
     <Link
       href={`/departments/${department.id}`}
       style={{ textDecoration: 'none', color: 'inherit', outline: 'none' }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onFocus={() => setIsFocused(true)}
-      onBlur={() => setIsFocused(false)}
       onClick={handleCardClick}
     >
       <div
         style={{
-          background: active ? 'var(--bg-card-hover)' : 'var(--bg-card)',
-          border: `1px solid ${active ? '#0E9300' : 'var(--border)'}`,
+          background: 'var(--bg-card)',
+          border: '1px solid var(--border)',
           borderRadius: 'var(--radius-lg)',
           padding: '28px 24px',
           height: '100%',
@@ -54,10 +44,7 @@ export function DepartmentCard({ department }: DepartmentCardProps) {
           gap: '16px',
           backdropFilter: 'blur(12px)',
           transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-          transform: active ? 'translateY(-6px)' : 'none',
-          boxShadow: active 
-            ? '0 12px 30px rgba(14, 147, 0, 0.15)' 
-            : 'var(--shadow-sm)',
+          boxShadow: 'var(--shadow-sm)',
         }}
       >
         {/* Icon wrapper & subject count */}
@@ -67,13 +54,12 @@ export function DepartmentCard({ department }: DepartmentCardProps) {
               width: '48px',
               height: '48px',
               borderRadius: '12px',
-              background: active ? 'rgba(14, 147, 0, 0.12)' : 'var(--bg-secondary)',
-              border: `1px solid ${active ? 'rgba(14, 147, 0, 0.3)' : 'var(--border)'}`,
+              background: 'var(--bg-secondary)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               transition: 'all 0.3s ease',
-              color: active ? '#0E9300' : 'var(--text-secondary)',
+              color: 'var(--text-secondary)',
             }}
           >
             <IconComponent size={22} />
@@ -87,7 +73,6 @@ export function DepartmentCard({ department }: DepartmentCardProps) {
               background: 'rgba(14, 147, 0, 0.08)',
               padding: '4px 10px',
               borderRadius: '8px',
-              border: '1px solid rgba(14, 147, 0, 0.15)',
               fontFamily: 'system-ui, -apple-system, sans-serif',
             }}
           >
@@ -101,7 +86,7 @@ export function DepartmentCard({ department }: DepartmentCardProps) {
             style={{
               fontSize: '1.15rem',
               fontWeight: 700,
-              color: active ? '#0E9300' : 'var(--text-primary)',
+              color: 'var(--text-primary)',
               transition: 'color 0.2s ease',
               lineHeight: 1.3,
             }}
@@ -128,12 +113,12 @@ export function DepartmentCard({ department }: DepartmentCardProps) {
             gap: '6px',
             fontSize: '0.8125rem',
             fontWeight: 600,
-            color: active ? '#0E9300' : 'var(--text-muted)',
+            color: 'var(--text-muted)',
             transition: 'color 0.2s ease',
           }}
         >
           <span>Explore Subjects</span>
-          <Icons.ArrowRight size={13} style={{ transform: active ? 'translateX(4px)' : 'none', transition: 'transform 0.2s ease' }} />
+          <Icons.ArrowRight size={13} style={{ transition: 'transform 0.2s ease' }} />
         </div>
       </div>
     </Link>

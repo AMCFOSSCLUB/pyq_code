@@ -61,6 +61,33 @@ export async function uploadFile(
   return data.commit.sha!;
 }
 
+export async function deleteFile(subjectCode: string, subjectTitle: string | undefined, month: string | undefined, filename: string): Promise<void> {
+  const candidatePaths = [
+    [subjectTitle, subjectCode, month, filename].filter(Boolean).join('/'),
+    [subjectCode, filename].filter(Boolean).join('/'),
+    [subjectTitle, subjectCode, filename].filter(Boolean).join('/'),
+  ].filter(Boolean);
+
+  for (const path of candidatePaths) {
+    try {
+      const { data } = await octokit.repos.getContent({ owner, repo, path });
+      if (Array.isArray(data)) continue;
+
+      await octokit.repos.deleteFile({
+        owner,
+        repo,
+        path,
+        message: `Delete ${filename} from ${subjectCode}`,
+        sha: data.sha,
+      });
+      return;
+    } catch (e: any) {
+      if (e.status === 404) continue;
+      throw e;
+    }
+  }
+}
+
 /** Returns the raw GitHub CDN URL for a stored PDF. */
 export function getFileDownloadUrl(subjectCode: string, subjectTitle: string | undefined, month: string | undefined, filename: string): string {
   if (month && subjectTitle) {

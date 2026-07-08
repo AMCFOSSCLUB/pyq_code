@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
     // Commit to GitHub
     const title = subjectTitle || 'Unknown';
     const m = month || 'Unknown';
-    const commitSha = await uploadFile(subjectCode, title, m, fullBase64, uploaderGitHub);
+    const commitSha = await uploadFile(subjectCode, title, m, filename, fullBase64, uploaderGitHub);
 
     // Write Firestore upload doc
     const uploadRef = await db.collection('uploads').add({
