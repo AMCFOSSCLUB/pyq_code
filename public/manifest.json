@@ -1,0 +1,29 @@
+{
+  "short_name": "AMCFOSS PYQ",
+  "name": "AMCFOSS PYQ - Amrita Chennai Previous Year Papers",
+  "description": "Free, community-driven repository of previous year question papers for Amrita Chennai students.",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "theme_color": "#0e9300",
+  "background_color": "#030303"
+}
